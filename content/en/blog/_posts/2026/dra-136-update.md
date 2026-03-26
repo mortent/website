@@ -11,12 +11,12 @@ author: >
 Dynamic Resource Allocation (DRA) has fundamentally changed how we handle hardware
 accelerators and specialized resources in Kubernetes. In the v1.36 release, DRA
 continues to mature, bringing a wave of feature graduations, critical usability
-improvements, and new capabilities that bridge the gap between workload deployment
-and specialized hardware orchestration.
+improvements, and new capabilities that extends the flexibility of DRA to native
+resources like memory and CPU and support for ResourceClaims for PodGroups.
 
-Whether you are managing massive fleets of GPUs, partitioning devices, or simply looking
-for better ways to define resource fallback options, the v1.36 updates to DRA have
-something for you. Let's dive into the new features and graduations!
+Whether you are managing massive fleets of GPUs, need better handling of failures,
+or simply looking for better ways to define resource fallback options, the upgrades
+to DRA in 1.36 have something for you. Let's dive into the new features and graduations!
 
 ## Feature Graduations
 
@@ -25,8 +25,9 @@ several highly anticipated features have graduated to Beta and Stable.
 
 **Prioritized List (Stable)**
 
-Hardware heterogeneity is a reality in most clusters. With the Prioritized List feature
-now graduating to Stable, you can confidently define fallback preferences when requesting
+Hardware heterogeneity is a reality in most clusters. With the
+[Prioritized List](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#prioritized-list)
+feature now graduating to Stable, you can confidently define fallback preferences when requesting
 devices. Instead of hardcoding a request for a specific device model, you can specify an
 ordered list of preferences (e.g., "Give me an H100, but if none are available, fall back
 to an A100"). The scheduler will evaluate these requests in order, drastically improving
@@ -35,7 +36,9 @@ scheduling flexibility and cluster utilization.
 **Partitionable Devices (Beta)**
 
 Hardware accelerators are powerful, and sometimes a single workload doesn't need an
-entire device. The Partitionable Devices feature, now in Beta, provides native DRA
+entire device. The
+[Partitionable Devices](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#partitionable-devices)
+feature, now in Beta, provides native DRA
 support for carving physical hardware into smaller, logical instances (such as
 Multi-Instance GPUs or MIGs). This allows administrators to safely and efficiently
 share expensive accelerators across multiple Pods.
@@ -43,15 +46,17 @@ share expensive accelerators across multiple Pods.
 **Device Taints (Beta)**
 
 Similar to how you can taint a Kubernetes Node, you can now apply taints directly to
-specific DRA devices. Graduating to Beta in this release, Device Taints allow cluster
-administrators to reserve specific hardware for dedicated teams, specialized workloads,
-or experimental environments. Only Pods with the corresponding tolerations will be
+specific DRA devices. Graduating to Beta in this release,
+[Device Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#device-taints-and-tolerations)
+allow cluster administrators to reserve specific hardware for dedicated teams, specialized
+workloads, or experimental environments. Only Pods with the corresponding tolerations will be
 permitted to claim and bind to these tainted devices.
 
 **Device Binding Conditions (Beta)**
 
 Observability during the Pod scheduling phase has historically been tricky. With
-Device Binding Conditions moving to Beta, Kubernetes now exposes detailed, structured
+[Device Binding Conditions](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#device-taints-and-tolerations)
+moving to Beta, Kubernetes now exposes detailed, structured
 condition statuses natively on Pods and ResourceClaims. This makes it significantly
 easier to debug why a Pod is stuck pending, whether it's waiting on device allocation,
 binding, or a specific DRA driver response.
@@ -59,8 +64,9 @@ binding, or a specific DRA driver response.
 **Extended Resource Support (Beta)**
 
 As DRA becomes the standard for resource allocation, bridging the gap with legacy
-systems is crucial. The ability to request traditional node-level Extended Resources
-through the DRA API has graduated to Beta. This provides a unified, consistent API
+systems is crucial. The ability to request traditional node-level
+[Extended Resource](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#device-taints-and-tolerations)
+allocation by DRA has graduated to Beta. This provides a unified, consistent API
 surface for users, allowing them to use DRA's advanced semantics even for resources
 exposed via older device plugins.
 
